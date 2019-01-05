@@ -1,6 +1,6 @@
 // See README.md for license details.
 
-package gcd
+package reg
 
 import chisel3._
 
@@ -23,9 +23,9 @@ import chisel3._
   * sbt 'test:runMain gcd.GCDMain --backend-name verilator'
   * }}}
   */
-object GCDMain extends App {
-  iotesters.Driver.execute(args, () => new GCD) {
-    c => new GCDUnitTester(c)
+object MyRegMain extends App {
+  iotesters.Driver.execute(args, () => new MyReg) {
+    c => new MyRegUnitTester(c)
   }
 }
 
@@ -45,5 +45,5 @@ object GCDMain extends App {
   * }}}
   */
 object GCDRepl extends App {
-  iotesters.Driver.executeFirrtlRepl(args, () => new GCD)
+  iotesters.Driver.executeFirrtlRepl(args, () => new MyReg)
 }
