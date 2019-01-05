@@ -1,34 +1,21 @@
 // See README.md for license details.
 
-package gcd
+package reg
 
 import chisel3._
 
-/**
-  * Compute GCD using subtraction method.
-  * Subtracts the smaller from the larger until register y is zero.
-  * value in register x is then the GCD
-  */
-class GCD extends Module {
+class MyReg extends Module {
   val io = IO(new Bundle {
-    val value1        = Input(UInt(16.W))
-    val value2        = Input(UInt(16.W))
-    val loadingValues = Input(Bool())
-    val outputGCD     = Output(UInt(16.W))
-    val outputValid   = Output(Bool())
+    val in_val = Input(UInt(8.W))
+    val in_wren = Input(Bool())
+    val out = Output(UInt(8.W))
   })
 
-  val x  = Reg(UInt())
-  val y  = Reg(UInt())
+  val reg = RegInit(0.U(8.W))
 
-  when(x > y) { x := x - y }
-    .otherwise { y := y - x }
-
-  when(io.loadingValues) {
-    x := io.value1
-    y := io.value2
+  when (io.in_wren) {
+    reg := io.in_val
   }
 
-  io.outputGCD := x
-  io.outputValid := y === 0.U
+  io.out := reg
 }
