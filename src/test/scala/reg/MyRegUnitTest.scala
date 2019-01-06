@@ -14,13 +14,13 @@ class MyRegUnitTester(c: MyReg) extends PeekPokeTester(c) {
   var exp_val = 0
 
   /**
-    * compute the r and the number of steps it should take to do it
+    * update the register value
     *
-    * @param a positive integer
-    * @param b positive integer
-    * @return the GCD of a and b
+    * @param wren write enable
+    * @param wrdata positive integer
+    * @return the Register value
     */
-  def computeGcd(wren: Boolean, wrdata: Int): (Int) = {
+  def updateMyReg(wren: Boolean, wrdata: Int): Int = {
 
     if (wren) {
       exp_val = wrdata
@@ -35,16 +35,15 @@ class MyRegUnitTester(c: MyReg) extends PeekPokeTester(c) {
     val wren =  floor(random * 2).toInt == 1
     val wrdata = floor(random * 10).toInt
 
-    println(floor(random * 2).toInt.toString)
-    println(wren.toString)
-
     poke(r.io.in_wren, wren)
     poke(r.io.in_val, wrdata)
     step(1)
 
-    val expected_val = computeGcd(wren, wrdata)
+    val expected_val = updateMyReg(wren, wrdata)
 
     expect(r.io.out, expected_val)
+
+    println(f"(wren, wrdata, io.out) = ($wren%5s, 0x$wrdata%02x, 0x${peek(r.io.out).toInt}%02x)")
   }
 }
 
